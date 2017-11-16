@@ -31,11 +31,17 @@ Currently none.
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
     - hosts: all
       roles:
-         - wizonesolutions.letsencrypt
+        - role: wizonesolutions.letsencrypt
+          # To use the production ACME server.
+          acme_sh_env: ''
+          acme_sh_account_email: 'example@example.com'
+          acme_sh_primary_domain: 'example.com.com'
+          acme_sh_key_file: '/etc/nginx/certs/{{ acme_sh_primary_domain }}_key.pem'
+          acme_sh_fullchain_file: '/etc/nginx/certs/{{ acme_sh_primary_domain }}_fullchain.pem'
+          acme_sh_reloadcmd: 'service nginx force-reload'
+         
 
 License
 -------
