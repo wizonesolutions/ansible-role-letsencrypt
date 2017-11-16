@@ -1,38 +1,50 @@
-Role Name
+Let's Encrypt (acme.sh)
 =========
 
-A brief description of the role goes here.
+This role installs [acme.sh](https://github.com/Neilpang/acme.sh) and generates certificates with
+it. Acme.sh is a useful, versatile, lightweight shell script for interacting with Let's Encrypt
+(a so-called ACME Client). It supports many Let's Encrypt challenge types, including **dns-01**,
+which allows domain verification through a `TXT` record in DNS. This lets you generate certificates
+for non-public domains, and acme.sh can automatically process this challenge (with Certbot, you
+must manually create `TXT` records).
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- Ownership of the domains you wish to validate
+- An essential understanding of how acme.sh works. I recommend visiting the project page linked
+above and understanding your desired command invocation. This role lets you override most of it so
+that you can take advantage of its features.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+See `defaults/main.yml`. It is important to read the notes on how to configure the role. Namely,
+you will want to ensure that `acme_sh_env` is changed from the default value (which points to the
+ACME staging server), at least when you want to generate real SSL certificates.
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+Currently none.
 
 Example Playbook
 ----------------
 
 Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
-    - hosts: servers
+    - hosts: all
       roles:
-         - { role: username.rolename, x: 42 }
+         - wizonesolutions.letsencrypt
 
 License
 -------
 
-BSD
+MIT
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Kevin Kaland ([WizOne Solutions](https://www.wizonesolutions.com))
+
+Sponsored by [Project Ricochet](https://projectricochet.com): Drupal Development and Meteor Development, Bay Area

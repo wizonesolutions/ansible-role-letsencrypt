@@ -1,2 +1,56 @@
 ---
-# tasks file for wizonesolutions.letsencrypt
+- name: clone acme.sh repo
+  git:
+    repo: '{{ acme_sh_repo }}'
+    version: '{{ acme_sh_version }}'
+    accept_hostkey: yes
+    dest: '{{ acme_sh_clone_location }}'
+
+- name: install acme.sh
+  shell: ./acme.sh --install --log --accountemail "{{ acme_sh_account_email }}" {{ acme_sh_install_suffix }}
+  args:
+    chdir: {{ acme_sh_install_location }}
+  register: acme_sh_installed
+  changed_when: false
+
+- name: generate certificate with acme.sh
+  shell: >
+    {% if acme_sh_env != '' %}{{ acme_sh_env }} {% endif %}
+    {{ acme_sh_home }}/acme.sh
+      --issue
+      {{ acme_sh_issue_prefix }}
+      -d {{ acme_sh_primary_domain }}
+    {% if acme_sh_secondary_domains|length > 0 %}
+      -d {{ acme_sh_secondary_domains }}.split(" ")|join(" -d ") }}
+    {% endif %}
+      {{ acme_sh_issue_suffix }}
+  args:
+    creates: {{ acme_sh_home }}/{{ acme_sh_primary_domain }}/{{ acme_sh_primary_domain }}.cer
+  when: acme_sh_primary_domain != ''
+
+- name: install acme.sh certificates
+  shell: >
+    ./acme.sh --install-cert
+      -d {{ acme_sh_primary_domain }}
+    {% if acme_sh_ecc|bool == True %}
+      --ecc
+    {% endif %}
+    {% if acme_sh_cert_file != '' %}
+      --cert-file       "{{ acme_sh_cert_file }}"
+    {% endif %}
+    {% if acme_sh_key_file != '' %}
+      --key-file        "{{ acme_sh_key_file }}"
+    {% endif %}
+    {% if acme_sh_ca_file != '' %}
+      --ca-file        "{{ acme_sh_ca_file }}"
+    {% endif %}
+    {% if acme_sh_fullchain_file != '' %}
+      --fullchain-file  "{{ acme_sh_fullchain_file }}"
+    {% endif %}
+    {% if acme_sh_reloadcmd != '' %}
+      --reloadcmd        "{{ acme_sh_reloadcmd }}"
+    {% endif %}
+  args:
+    chdir: {{ acme_sh_home }}
+    creates: '{{ acme_sh__cert_file }}'
+  when: acme_sh_primary_domain != ''

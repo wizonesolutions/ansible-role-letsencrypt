@@ -1,2 +1,85 @@
 ---
-# defaults file for wizonesolutions.letsencrypt
+# You can do a few things with environment variables:
+# 1) Set to STAGE=1 to use stage server (when testing)
+# When ready to use a real certificate, run the generation command manually with --force (or
+# override this to blank on the command line).
+# 2) When using the dns-01 challenge (--dns), you can pass in your credentials here. For example,
+# DNS Made Easy looks for the ME_Key and ME_Secret environment variables.
+#
+# By default, this is set to use the Let's Encrypt staging server. This lets you ensure that your
+# provisioning will work without using up your Let's Encrypt rate limit.
+acme_sh_env: 'STAGE=1'
+
+# An email address at which Let's Encrypt can reach you. If you provide one, Let's Encrypt can send
+# you expiration warnings if something goes wrong and your certificate does not automatically renew.
+acme_sh_account_email: ''
+
+# REQUIRED TO ISSUE CERTIFICATE: The primary domain for which to issue a certificate. If you need
+# certificates for multiple primary domains, include this Ansible role multiple times with different
+# arguments. However, in general, it's usually fine to just generate one certificate for all domains
+# that point to the same site. Unless you know that you have users whose browsers do not support
+# Server Name Indication (SNI), this will work fine.
+#
+# If you leave this blank, the role will not generate a certificate. You will have to do so in your
+# main playbook. That is not normally necessary, though, because you can provide a primary domain
+# and then use the acme_sh_issue_suffix variable to provide the rest of the command. You would do
+# this if you wanted to use different challenges for each domain. See the "Multiple domains, SAN
+# mode, Hybrid mode" section at https://github.com/Neilpang/acme.sh/wiki/How-to-issue-a-cert
+acme_sh_primary_domain: ''
+
+# If your site/service can be accessed at other domains (even if they just redirect to the primary
+# domain), include them in this variable as a list. They will be included in the generated
+# certificate.
+acme_sh_secondary_domains: []
+
+# Arguments to include before the domain arguments when issuing a certificate. The typical use for
+# this is to pass --nginx or --apache when you want acme.sh to automatically perform the http-01
+# challenge.
+acme_sh_issue_prefix: ''
+
+# REQUIRED TO ISSUE CERTIFICATE: Specify additional arguments to issue the certificate. This is
+# normally the challenge type: for example, -w, --dns, etc. See
+# https://github.com/Neilpang/acme.sh/wiki/How-to-issue-a-cert to get an overview of the options.
+# This gets added after the domain arguments. See the comments above acme_sh_primary_domain for
+# important information.
+acme_sh_issue_suffix: ''
+
+# THE FOLLOWING VARIABLES ARE REQUIRED TO AUTOMATICALLY INSTALL THE CERTIFICATES.
+# The cert_, key_, and fullchain_file variables control where acme.sh installs your certificates.
+# These should be the full path to each file, including the filename and extension.
+#
+# You do not necessarily need to set all of these. See the acme.sh homepage for Apache and nginx
+# examples.
+#
+# You CAN leave these blank, in which case acme.sh just sets up certificate renewal but does not
+# install them.
+acme_sh_cert_file: ''
+acme_sh_key_file: ''
+acme_sh_ca_file: ''
+acme_sh_fullchain_file: ''
+
+# How should acme.sh reload your web server after installing the certificate?
+# The correct command varies by operating system. On Ubuntu 16.04, you might use:
+#   service apache2 force-reload
+acme_sh_reloadcmd: ''
+
+# If you need an ECC certificate, set this to true. You probably know if you need one (but if not,
+# see the acme.sh documentation).
+acme_sh_ecc: false
+
+# Additional arguments for the --install command. These get added to the end. See
+# https://github.com/Neilpang/acme.sh/wiki/How-to-install for documentation about them.
+acme_sh_install_suffix: ''
+
+# The repository from which to download acme.sh. You do not normally need to change this, but doing
+# so may be useful if you temporarily need to use a fork.
+acme_sh_repo: https://github.com/Neilpang/acme.sh.git
+
+# Where to clone the acme.sh repo. The default location is appropriate for most people.
+acme_sh_clone_location: '{{ ansible_env.HOME }}/acme.sh'
+
+# The acme.sh version to install. To always run the latest code, set to 'master'.
+acme_sh_version: 2.7.4
+
+# Where to install acme.sh. The default location is appropriate for most people.
+acme_sh_home: '{{ ansible_env.HOME }}/.acme.sh'
