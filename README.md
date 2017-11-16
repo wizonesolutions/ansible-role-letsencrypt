@@ -11,10 +11,13 @@ must manually create `TXT` records).
 Requirements
 ------------
 
+- Assumes that you are using acme.sh 2.7.4+ (if you change the version via role configuration, it
+may break).
 - Ownership of the domains you wish to validate
 - An essential understanding of how acme.sh works. I recommend visiting the project page linked
 above and understanding your desired command invocation. This role lets you override most of it so
 that you can take advantage of its features.
+- Proper webserver configuration. This is your responsibility.
 
 Role Variables
 --------------
