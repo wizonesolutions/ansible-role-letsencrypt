@@ -21,7 +21,7 @@
     {{ acme_sh_issue_prefix }}
     -d {{ acme_sh_primary_domain }}
     {% if acme_sh_secondary_domains|length > 0 %}
-    -d {{ acme_sh_secondary_domains }}.split(" ")|join(" -d ") }}
+    -d {{ acme_sh_secondary_domains|join(" -d ") }}
     {% endif %}
     {{ acme_sh_issue_suffix }}
   args:
