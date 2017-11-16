@@ -8,7 +8,7 @@
 #
 # By default, this is set to use the Let's Encrypt staging server. This lets you ensure that your
 # provisioning will work without using up your Let's Encrypt rate limit.
-acme_sh_env: 'STAGE=1'
+acme_sh_env: ''
 
 # An email address at which Let's Encrypt can reach you. If you provide one, Let's Encrypt can send
 # you expiration warnings if something goes wrong and your certificate does not automatically renew.
@@ -34,8 +34,8 @@ acme_sh_secondary_domains: []
 
 # Arguments to include before the domain arguments when issuing a certificate. The typical use for
 # this is to pass --nginx or --apache when you want acme.sh to automatically perform the http-01
-# challenge.
-acme_sh_issue_prefix: ''
+# challenge. If you aren't using either of those, set this to blank to use live mode.
+acme_sh_issue_prefix: '--staging'
 
 # REQUIRED TO ISSUE CERTIFICATE: Specify additional arguments to issue the certificate. This is
 # normally the challenge type: for example, -w, --dns, etc. See
