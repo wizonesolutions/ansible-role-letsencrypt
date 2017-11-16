@@ -9,7 +9,7 @@
 - name: install acme.sh
   shell: ./acme.sh --install --log --accountemail "{{ acme_sh_account_email }}" {{ acme_sh_install_suffix }}
   args:
-    chdir: {{ acme_sh_install_location }}
+    chdir: '{{ acme_sh_install_location }}'
   register: acme_sh_installed
   changed_when: false
 
@@ -25,7 +25,7 @@
     {% endif %}
       {{ acme_sh_issue_suffix }}
   args:
-    creates: {{ acme_sh_home }}/{{ acme_sh_primary_domain }}/{{ acme_sh_primary_domain }}.cer
+    creates: '{{ acme_sh_home }}/{{ acme_sh_primary_domain }}/{{ acme_sh_primary_domain }}.cer'
   when: acme_sh_primary_domain != ''
 
 - name: install acme.sh certificates
@@ -51,6 +51,6 @@
       --reloadcmd        "{{ acme_sh_reloadcmd }}"
     {% endif %}
   args:
-    chdir: {{ acme_sh_home }}
+    chdir: '{{ acme_sh_home }}'
     creates: '{{ acme_sh__cert_file }}'
   when: acme_sh_primary_domain != ''
