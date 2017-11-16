@@ -11,6 +11,7 @@ must manually create `TXT` records).
 Requirements
 ------------
 
+- Git. A role like `geerlingguy.git` will install this for you.
 - Assumes that you are using acme.sh 2.7.4+ (if you change the version via role configuration, it
 may break).
 - Ownership of the domains you wish to validate
